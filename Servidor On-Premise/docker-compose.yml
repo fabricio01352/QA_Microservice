@@ -71,11 +71,25 @@ services:
 
 
 
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672" #aqui se van a comunicar
+      - "15672:15672" # pal admin web
+    environment:
+      RABBITMQ_DEFAULT_USER: admin
+      RABBITMQ_DEFAULT_PASS: admin
+    volumes:
+      - rabbitmq-data:/var/lib/rabbitmq
+
+
 
 # esto se va a declarar una sola vez, son volumenes y networks globales, aplicadas a cada contenedor que las quiera user
 volumes:
   mysql-data:
   pg-data:
+  rabbitmq-data:
 
 #simulando que tuvieramos una red privada, creo que bridge es privada. Solo para postgre
 networks:
