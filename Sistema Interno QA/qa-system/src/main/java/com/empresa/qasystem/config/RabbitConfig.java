@@ -1,45 +1,59 @@
 package com.empresa.qasystem.config;
 
 import org.springframework.amqp.core.*;
+import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import org.springframework.amqp.rabbit.config.SimpleRabbitListenerContainerFactory;
+import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 
 @Configuration
 public class RabbitConfig {
 
-    // Declarar la cola para el comando de defecto
+
+    public static final String DEFECTO_COMMAND_QUEUE = "defecto-command-queue";
+    public static final String ERP_EVENT_EXCHANGE = "erp-event-exchange";
+    public static final String DEFECTO_COMMAND_ROUTING_KEY = "defecto-command-routing-key";
+
+
+    public static final String NOTIFICACION_EVENT_EXCHANGE = "notificacion-event-exchange";
+    public static final String NOTIFICACION_EVENT_ROUTING_KEY = "notificacion-event-routing-key";
+
+    @Bean
+    public Jackson2JsonMessageConverter jackson2JsonMessageConverter() {
+        return new Jackson2JsonMessageConverter();
+    }
+
     @Bean
     public Queue defectoCommandQueue() {
-        return new Queue("defecto-command-queue", true);
+        return new Queue(DEFECTO_COMMAND_QUEUE, true);
     }
 
-    // Declarar el exchange para eventos ERP
     @Bean
-    public Exchange erpEventExchange() {
-        return ExchangeBuilder.directExchange("erp-event-exchange").durable(true).build();
+    public DirectExchange erpEventExchange() {
+        return new DirectExchange(ERP_EVENT_EXCHANGE, true, false);
     }
 
-    // Declarar el exchange para eventos de notificación
     @Bean
-    public Exchange notificacionEventExchange() {
-        return ExchangeBuilder.directExchange("notificacion-event-exchange").durable(true).build();
+    public DirectExchange notificacionEventExchange() {
+        return new DirectExchange(NOTIFICACION_EVENT_EXCHANGE, true, false);
     }
 
-    // Enlazar la cola de defecto con el exchange
     @Bean
     public Binding defectoCommandBinding() {
         return BindingBuilder.bind(defectoCommandQueue())
                 .to(erpEventExchange())
-                .with("defecto-command-routing-key")
-                .noargs();
+                .with(DEFECTO_COMMAND_ROUTING_KEY);
     }
 
-    // Enlazar la cola de notificación con el exchange
+
     @Bean
-    public Binding notificacionEventBinding() {
-        return BindingBuilder.bind(defectoCommandQueue())
-                .to(notificacionEventExchange())
-                .with("notificacion-event-routing-key")
-                .noargs();
+    public SimpleRabbitListenerContainerFactory rabbitListenerContainerFactory(ConnectionFactory connectionFactory,
+                                                                               Jackson2JsonMessageConverter messageConverter) {
+        SimpleRabbitListenerContainerFactory factory = new SimpleRabbitListenerContainerFactory();
+        factory.setConnectionFactory(connectionFactory);
+        factory.setMessageConverter(messageConverter);
+        return factory;
     }
 }

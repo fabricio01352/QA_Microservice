@@ -11,7 +11,11 @@ CREATE TABLE producto(
     nombre VARCHAR(50) NOT NULL,
     descripcion VARCHAR(500) DEFAULT 'N/A',
     defectuoso BOOLEAN DEFAULT 0,
-    fecha VARCHAR(45) NOT NULL
+    fecha VARCHAR(45) NOT NULL,
+    costo float,
+    requiereAtencion BOOLEAN DEFAULT 0,
+    tipodefecto VARCHAR(50) DEFAULT 'N/A'
+
 	
 
 );

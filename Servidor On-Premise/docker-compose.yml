@@ -17,20 +17,20 @@ services:
     networks:
       - pg-network
 
-  dbpostgre:
-    image: postgres:latest
-    container_name: postgres-container
-    restart: unless-stopped
-    environment:
-      - POSTGRES_USER=${POSTGRES_USER}
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-      - POSTGRES_DB=${POSTGRES_DB}
-    ports:
-      - "5432:5432"
-    volumes:
-      - pg-data:/var/lib/postgresql/data
-    networks:
-      - pg-network
+  # dbpostgre:
+  #   image: postgres:latest
+  #   container_name: postgres-container
+  #   restart: unless-stopped
+  #   environment:
+  #     - POSTGRES_USER=${POSTGRES_USER}
+  #     - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+  #     - POSTGRES_DB=${POSTGRES_DB}
+  #   ports:
+  #     - "5432:5432"
+  #   volumes:
+  #     - pg-data:/var/lib/postgresql/data
+  #   networks:
+  #     - pg-network
 
 
 #usar FIREWALLD un servicio de firewall dinamico debian
@@ -78,8 +78,8 @@ services:
       - "5672:5672" #aqui se van a comunicar
       - "15672:15672" # pal admin web
     environment:
-      RABBITMQ_DEFAULT_USER: admin
-      RABBITMQ_DEFAULT_PASS: admin
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
     volumes:
       - rabbitmq-data:/var/lib/rabbitmq
 

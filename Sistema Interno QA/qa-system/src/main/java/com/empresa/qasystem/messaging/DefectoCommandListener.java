@@ -13,7 +13,7 @@ public class DefectoCommandListener {
     @Autowired
     private ProductoDefectuosoService productoDefectuosoService;
 
-    // Método que escucha los mensajes de RabbitMQ con el comando "Registrar defecto"
+
     @RabbitListener(queues = "defecto-command-queue")
     public void handleDefectoCommand(ProductoDefectuosoDTO productoDefectuosoDTO) {
         System.out.println("Comando recibido para registrar defecto: " + productoDefectuosoDTO);
@@ -21,5 +21,10 @@ public class DefectoCommandListener {
         // Registrar el producto defectuoso en la base de datos
         ProductoDefectuoso productoDefectuoso = productoDefectuosoService.registrarDefecto(productoDefectuosoDTO);
 
+    }
+
+    @RabbitListener(queues = "defecto-command-queue")
+    public void testRawMessage(String message) {
+        System.out.println("🎯 Recibido como texto: " + message);
     }
 }

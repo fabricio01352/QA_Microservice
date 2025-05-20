@@ -14,6 +14,9 @@ import java.util.Optional;
 /**
  * Fabricio Omar y Carlos
  * Aqui se exponen los endpoints mediante la arquitectura REST y son consumidops por el cliente frontend
+ *
+ * Ahora no se usaria mucho este endpoint porque rabbit no jalo
+ * as que esta parte de la app va mandar los post a la otra app
  */
 @RestController
 @RequestMapping("/productos")

@@ -26,6 +26,7 @@ public class ProductoDefectuosoService {
         productoDefectuoso.setRequiereAtencion(productoDefectuosoDTO.isRequiereAtencion());
         productoDefectuoso.setFecha(java.time.LocalDateTime.now());
 
+
         return productoDefectuosoRepository.save(productoDefectuoso);
     }
 
